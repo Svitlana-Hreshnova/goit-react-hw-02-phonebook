@@ -8,26 +8,14 @@ class App extends Component {
   state = {
     contacts: [],
     filter: '',
-    name: '',
-    number: '',
-  };
-
-  handleNameChange = e => {
-    this.setState({ name: e.target.value });
-  };
-
-  handleNumberChange = e => {
-    this.setState({ number: e.target.value });
   };
 
   handleFilterChange = e => {
     this.setState({ filter: e.target.value });
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-
-    const { name, number, contacts } = this.state;
+  handleSubmit = ({ name, number }) => {
+    const { contacts } = this.state;
 
     if (
       contacts.some(
@@ -46,8 +34,6 @@ class App extends Component {
 
     this.setState(prevState => ({
       contacts: [...prevState.contacts, newContact],
-      name: '',
-      number: '',
     }));
   };
 
@@ -58,7 +44,7 @@ class App extends Component {
   };
 
   render() {
-    const { contacts, filter, name, number } = this.state;
+    const { contacts, filter } = this.state;
 
     const filteredContacts = contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
@@ -67,13 +53,7 @@ class App extends Component {
     return (
       <div>
         <h1>Phonebook</h1>
-        <ContactForm
-          onSubmit={this.handleSubmit}
-          name={name}
-          number={number}
-          onNameChange={this.handleNameChange}
-          onNumberChange={this.handleNumberChange}
-        />
+        <ContactForm onSubmit={this.handleSubmit} />
 
         <h2>Contacts</h2>
         <Filter filter={filter} onFilterChange={this.handleFilterChange} />
